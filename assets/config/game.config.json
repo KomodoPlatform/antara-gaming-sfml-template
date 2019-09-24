@@ -1,0 +1,10 @@
+{
+  "window": {
+    "fullscreen": false,
+    "size": {
+      "height": 1200,
+      "width": 800
+    },
+    "title": "my_game_project"
+  }
+}
