@@ -6,3 +6,12 @@ set_target_properties(${PROJECT_NAME}
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/"
         )
+
+magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
+        "org.antara.gaming.sfml.my_game_project.desktop"
+        "org.antara.gaming.sfml.my_game_project.appdata.xml"
+        "komodo_icon.png"
+        ${PROJECT_NAME}
+        MyGameProjectAppDir
+        ${CMAKE_CURRENT_SOURCE_DIR}/assets
+        )

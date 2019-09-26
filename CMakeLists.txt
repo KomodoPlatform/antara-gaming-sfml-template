@@ -6,10 +6,17 @@ cmake_minimum_required(VERSION 3.14)
 
 set(CMAKE_CXX_STANDARD 17)
 
-project(my_game_project DESCRIPTION "my_game_description" LANGUAGES CXX)
+file(STRINGS "VERSION.md" VERSION_NB)
+
+project(my_game_project VERSION ${VERSION_NB} DESCRIPTION "my_game_description" LANGUAGES CXX)
 
 if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     message(FATAL_ERROR "Only Clang is supported (minimum LLVM 8.0)")
+endif ()
+
+##! conf
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    set(LINUX TRUE)
 endif ()
 
 include(FetchContent)
@@ -23,4 +30,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(antara-gaming-sdk)
 
+download_app_image()
 add_subdirectory(${PROJECT_NAME})
+
