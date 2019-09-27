@@ -27,7 +27,6 @@ FetchContent_Declare(
         antara-gaming-sdk
         URL https://github.com/KomodoPlatform/antara-gaming-sdk/archive/master.zip
 )
-
 FetchContent_MakeAvailable(antara-gaming-sdk)
 
 download_app_image()

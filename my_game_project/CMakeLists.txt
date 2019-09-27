@@ -1,4 +1,6 @@
-add_executable(${PROJECT_NAME})
+set(ICON)
+configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
+add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON})
 target_sources(${PROJECT_NAME} PRIVATE main.cpp my_game_project.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC antara::sfml antara::world antara::scenes)
 
@@ -15,3 +17,8 @@ magic_game_app_image_generation("${CMAKE_CURRENT_SOURCE_DIR}/data/linux"
         MyGameProjectAppDir
         ${CMAKE_CURRENT_SOURCE_DIR}/assets
         )
+
+if (APPLE)
+    file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/my_game_project.app/Contents/Resources)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/data/osx/my_game_project.cmake)
+endif ()

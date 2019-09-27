@@ -1,25 +1,25 @@
 if (APPLE)
-    set_target_properties(antara-sfml-example PROPERTIES
-            MACOSX_BUNDLE_BUNDLE_NAME "antara-sfml-example"
-            RESOURCE data/osx/antara-sfml-example.icns
-            MACOSX_BUNDLE_ICON_FILE antara-sfml-example
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+            MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
+            RESOURCE data/osx/my_game_project.icns
+            MACOSX_BUNDLE_ICON_FILE ${PROJECT_NAME}
             MACOSX_BUNDLE_SHORT_VERSION_STRING 0.0.1
             MACOSX_BUNDLE_LONG_VERSION_STRING 0.0.1
-            MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/cmake/MacOSXBundleInfo.plist.in")
-    add_custom_command(TARGET antara-sfml-example
+            MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/data/osx/MacOSXBundleInfo.plist.in")
+    add_custom_command(TARGET ${PROJECT_NAME}
             POST_BUILD COMMAND
             ${CMAKE_INSTALL_NAME_TOOL} -add_rpath "@executable_path/../Frameworks/"
-            $<TARGET_FILE:antara-sfml-example>)
+            $<TARGET_FILE:${PROJECT_NAME}>)
 endif ()
 
 if (APPLE)
-    install(TARGETS antara-sfml-example
+    install(TARGETS ${PROJECT_NAME}
             BUNDLE DESTINATION . COMPONENT Runtime
             RUNTIME DESTINATION bin COMPONENT Runtime
             )
 
     # Note Mac specific extension .app
-    set(APPS "\${CMAKE_INSTALL_PREFIX}/antara-sfml-example.app")
+    set(APPS "\${CMAKE_INSTALL_PREFIX}/my_game_project.app")
 
     # Directories to look for dependencies
     set(DIRS ${CMAKE_BINARY_DIR})
@@ -30,6 +30,6 @@ if (APPLE)
     set(CPACK_GENERATOR "DRAGNDROP")
     set(CPACK_DMG_DS_STORE_SETUP_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/data/osx/Packaging_CMakeDMGSetup.scpt")
     set(CPACK_DMG_BACKGROUND_IMAGE "${CMAKE_CURRENT_SOURCE_DIR}/data/osx/Packaging_CMakeDMGBackground.tif")
-    set(CPACK_PACKAGE_NAME "antara-sfml-example")
+    set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
     include(CPack)
 endif ()
