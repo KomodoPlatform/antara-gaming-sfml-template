@@ -30,5 +30,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(antara-gaming-sdk)
 
 download_app_image()
+init_apple_env()
 add_subdirectory(${PROJECT_NAME})
 
