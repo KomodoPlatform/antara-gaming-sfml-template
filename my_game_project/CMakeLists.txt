@@ -22,3 +22,12 @@ if (APPLE)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/my_game_project.app/Contents/Resources)
     include(${CMAKE_CURRENT_SOURCE_DIR}/data/osx/my_game_project.cmake)
 endif ()
+
+if (WIN32)
+    file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
+    ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_BINARY_DIR}/lib" "${CMAKE_BINARY_DIR}/bin/"
+            COMMENT "copying dlls …"
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            )
+endif ()
