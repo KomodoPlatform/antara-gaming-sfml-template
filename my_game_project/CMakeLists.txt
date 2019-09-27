@@ -5,7 +5,7 @@ target_sources(${PROJECT_NAME} PRIVATE main.cpp my_game_project.cpp game.scene.c
 target_link_libraries(${PROJECT_NAME} PUBLIC antara::sfml antara::world antara::scenes)
 if (USE_LUA_ANTARA_WRAPPER)
     target_link_libraries(${PROJECT_NAME} PUBLIC antara::lua)
-endif()
+endif ()
 
 set_target_properties(${PROJECT_NAME}
         PROPERTIES
@@ -28,6 +28,7 @@ endif ()
 
 if (WIN32)
     file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/)
+    file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE})
     ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_BINARY_DIR}/lib" "${CMAKE_BINARY_DIR}/bin/"
             COMMENT "copying dlls …"
