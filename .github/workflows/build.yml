@@ -14,13 +14,15 @@ jobs:
           ubuntu-18-04-clang-8-debug,
           windows-2019-clang-cl-debug,
           macos-10-14-clang-8-debug,
+          macos-10-14-clang-9-debug,
           ubuntu-18-04-clang-8-release,
           windows-2019-clang-cl-release,
           macos-10-14-clang-8-release,
+          macos-10-14-clang-9-release,
         ]
 
         include:
-          
+
           - name: ubuntu-18-04-clang-8-debug
             os: ubuntu-18.04
             cmake_build_type: Debug
@@ -42,6 +44,12 @@ jobs:
             os: macOS-10.14
             compiler: clang
             version: "8"
+
+          - name: macos-10-14-clang-9-debug
+            cmake_build_type: Debug
+            os: macOS-10.14
+            compiler: clang
+            version: "9"
 
           - name: ubuntu-18-04-clang-8-release
             os: ubuntu-18.04
@@ -65,6 +73,12 @@ jobs:
             compiler: clang
             version: "8"
 
+          - name: macos-10-14-clang-9-release
+            cmake_build_type: Release
+            os: macOS-10.14
+            compiler: clang
+            version: "9"
+
 
     steps:
       - uses: actions/checkout@v1
@@ -75,7 +89,7 @@ jobs:
           curl -sSL https://github.com/Kitware/CMake/releases/download/v3.15.3/cmake-3.15.3-Linux-x86_64.tar.gz -o cmake.tar.gz
           sudo tar xf cmake.tar.gz --strip 1 -C /usr/local
           sudo apt-get install ninja-build
-          
+
             # LLVM 9 is not yet in bionic's repositories.
           sudo add-apt-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main"
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
@@ -88,12 +102,15 @@ jobs:
       - name: Install (macOS)
         if: runner.os == 'macOS'
         run: |
+          brew update
           brew install pkg-config freetype
           pkg-config --cflags freetype2
-          brew install ninja llvm@8
+          brew install ninja
+          brew install llvm@${{ matrix.version}}
+          echo "::set-env name=CC::/usr/local/opt/llvm@${{ matrix.version}}/bin/clang"
+          echo "::set-env name=CXX::/usr/local/opt/llvm@${{ matrix.version}}/bin/clang++"
           sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
-          echo "::set-env name=CC::/usr/local/opt/llvm@8/bin/clang"
-          echo "::set-env name=CXX::/usr/local/opt/llvm@8/bin/clang++"
+
 
       - name: Install (Windows)
         if: runner.os == 'Windows'
@@ -117,7 +134,7 @@ jobs:
           ANTARA_BUILD_TYPE: ${{matrix.cmake_build_type}}
         if: runner.os == 'Linux' || runner.os == 'macOS'
         run: |
-            cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${ANTARA_BUILD_TYPE} -DUSE_LUA_ANTARA_WRAPPER=ON -DUSE_SFML_ANTARA_WRAPPER=ON
+          cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${ANTARA_BUILD_TYPE} -DUSE_LUA_ANTARA_WRAPPER=ON -DUSE_SFML_ANTARA_WRAPPER=ON
 
       - name: Configure (Windows)
         env:
