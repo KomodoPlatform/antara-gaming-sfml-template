@@ -13,8 +13,13 @@
  * Removal or modification of this copyright notice is prohibited.            *
  *                                                                            *
  ******************************************************************************/
+
 #include <iostream>
+#include <antara/gaming/ecs/component.position.hpp>
+#include <antara/gaming/ecs/component.layer.hpp>
+#include <antara/gaming/sfml/component.drawable.hpp>
 #include <antara/gaming/scenes/change.scene.event.hpp>
+#include <antara/gaming/config/config.game.hpp>
 #include "game.scene.hpp"
 #include "intro.scene.hpp"
 
@@ -25,6 +30,36 @@ namespace my_game_name_space
             dispatcher_)
     {
         std::cout << "hello from " << scene_name() << std::endl;
+
+
+        //! load a font
+        auto handle = resource_mgr.load_font("sansation.ttf");
+
+        //! Get window information
+        auto &window_info = entity_registry_.ctx<antara::gaming::config::game_cfg>().win_cfg;
+
+        //! Create a dummy entity
+        auto dummy_entity = entity_registry_.create();
+
+        //! attach a text component to it
+        auto &txt_cmp = entity_registry_.assign<antara::gaming::sfml::text>(dummy_entity,
+                                                                            sf::Text("Intro Scene", *handle, 30));
+        sf::Text &txt = txt_cmp.drawable;
+        txt.setFillColor(sf::Color::Blue);
+        txt.setOrigin(txt.getLocalBounds().width / 2.0f, txt.getLocalBounds().height / 2.0f);
+
+        //! attach a component position to the entity
+        this->entity_registry_.assign<antara::gaming::ecs::component::position>(dummy_entity,
+                                                                                static_cast<float>(window_info.width) /
+                                                                                2.f,
+                                                                                static_cast<float>(window_info.height) /
+                                                                                2.f);
+
+        //! attach a tag component to the entity
+        entity_registry_.assign<entt::tag<"intro_scene"_hs >>(dummy_entity);
+
+        //! attach a layer to the entity
+        this->entity_registry_.assign<antara::gaming::ecs::component::layer<0>>(dummy_entity);
     }
 
     void intro_scene::update() noexcept
@@ -53,7 +88,7 @@ namespace my_game_name_space
 
     intro_scene::~intro_scene() noexcept
     {
-        auto view = entity_registry_.view<entt::tag<"intro_scene"_hs>>();
+        auto view = entity_registry_.view<entt::tag<"intro_scene"_hs >>();
         entity_registry_.destroy(view.begin(), view.end());
     }
 }

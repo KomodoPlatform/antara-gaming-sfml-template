@@ -17,7 +17,8 @@
 #pragma once
 
 #include <antara/gaming/scenes/change.scene.event.hpp>
-#include "antara/gaming/scenes/base.scene.hpp"
+#include <antara/gaming/sfml/resources.manager.hpp>
+#include <antara/gaming/scenes/base.scene.hpp>
 
 namespace my_game_name_space
 {
@@ -35,5 +36,7 @@ namespace my_game_name_space
         std::string scene_name() noexcept final;
 
         ~game_scene() noexcept final;
+    private:
+        antara::gaming::sfml::resources_manager resource_mgr;
     };
 }
