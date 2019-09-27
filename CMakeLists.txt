@@ -23,6 +23,12 @@ include(FetchContent)
 
 set(USE_SFML_ANTARA_WRAPPER ON CACHE BOOL "Override option" FORCE)
 
+##uncomment the line below if you want to use lua scripting in your project
+#set(USE_LUA_ANTARA_WRAPPER ON CACHE BOOL "Override option" FORCE)
+if (USE_LUA_ANTARA_WRAPPER)
+    add_definitions(-DUSE_LUA_ANTARA_WRAPPER)
+endif()
+
 FetchContent_Declare(
         antara-gaming-sdk
         URL https://github.com/KomodoPlatform/antara-gaming-sdk/archive/master.zip
@@ -31,5 +37,10 @@ FetchContent_MakeAvailable(antara-gaming-sdk)
 
 download_app_image()
 init_apple_env()
+
+if (USE_LUA_ANTARA_WRAPPER)
+    get_lua_scenes_system(${PROJECT_SOURCE_DIR}/my_game_project)
+endif()
 add_subdirectory(${PROJECT_NAME})
+
 

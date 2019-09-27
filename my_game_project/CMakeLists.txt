@@ -3,6 +3,9 @@ configure_icon_osx(data/osx/kmd_logo.icns ICON kmd_logo.icns)
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ICON})
 target_sources(${PROJECT_NAME} PRIVATE main.cpp my_game_project.cpp game.scene.cpp intro.scene.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC antara::sfml antara::world antara::scenes)
+if (USE_LUA_ANTARA_WRAPPER)
+    target_link_libraries(${PROJECT_NAME} PUBLIC antara::lua)
+endif()
 
 set_target_properties(${PROJECT_NAME}
         PROPERTIES
@@ -31,3 +34,4 @@ if (WIN32)
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
             )
 endif ()
+
