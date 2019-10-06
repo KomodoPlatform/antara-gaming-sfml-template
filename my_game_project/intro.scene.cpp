@@ -25,9 +25,7 @@
 
 namespace my_game_name_space
 {
-    intro_scene::intro_scene(entt::registry &entity_registry, entt::dispatcher &dispatcher_) noexcept : base_scene(
-            entity_registry,
-            dispatcher_)
+    intro_scene::intro_scene(entt::registry &entity_registry) noexcept : base_scene(entity_registry)
     {
         std::cout << "hello from " << scene_name() << std::endl;
 
@@ -71,7 +69,7 @@ namespace my_game_name_space
     {
         if (evt.key == antara::gaming::input::key::space) {
             this->dispatcher_.trigger<antara::gaming::event::change_scene>(
-                    std::make_unique<game_scene>(this->entity_registry_, this->dispatcher_), false);
+                    std::make_unique<game_scene>(this->entity_registry_), false);
         }
         return true;
     }

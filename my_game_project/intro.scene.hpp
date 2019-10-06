@@ -25,7 +25,7 @@ namespace my_game_name_space
     class intro_scene final : public antara::gaming::scenes::base_scene
     {
     public:
-        intro_scene(entt::registry &entity_registry, entt::dispatcher &dispatcher_) noexcept;
+        intro_scene(entt::registry &entity_registry) noexcept;
 
         void update() noexcept final;
 

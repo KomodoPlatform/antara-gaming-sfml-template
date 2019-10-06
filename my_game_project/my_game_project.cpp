@@ -34,6 +34,6 @@ namespace my_game_name_space
         //! Here you can initialize your own systems
 
         //! Here you can choose the starting scene (intro_scene by default)
-        scene_manager.change_scene(std::make_unique<intro_scene>(entity_registry_, dispatcher_), true);
+        scene_manager.change_scene(std::make_unique<intro_scene>(entity_registry_), true);
     }
 }
