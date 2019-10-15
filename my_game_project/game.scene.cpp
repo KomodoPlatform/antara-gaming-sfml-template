@@ -16,13 +16,15 @@
 
 #include <iostream>
 #include <entt/entity/helper.hpp>
-#include <antara/gaming/ecs/component.position.hpp>
-#include <antara/gaming/ecs/component.layer.hpp>
+#include <antara/gaming/transform/component.position.hpp>
+#include <antara/gaming/graphics/component.layer.hpp>
 #include <antara/gaming/sfml/component.drawable.hpp>
 #include <antara/gaming/scenes/change.scene.event.hpp>
-#include <antara/gaming/config/config.game.hpp>
+#include <antara/gaming/config/config.game.maker.hpp>
 #include "game.scene.hpp"
 #include "intro.scene.hpp"
+
+using namespace antara::gaming;
 
 namespace my_game_name_space
 {
@@ -34,7 +36,7 @@ namespace my_game_name_space
         auto handle = resource_mgr.load_font("sansation.ttf");
 
         //! Get window information
-        auto &window_info = entity_registry_.ctx<antara::gaming::config::game_cfg>().win_cfg;
+        auto &window_info = entity_registry_.ctx<graphics::canvas_2d>().canvas.size;
 
         //! Create a dummy entity
         auto dummy_entity = entity_registry_.create();
@@ -47,17 +49,17 @@ namespace my_game_name_space
         txt.setOrigin(txt.getLocalBounds().width / 2.0f, txt.getLocalBounds().height / 2.0f);
 
         //! attach a component position to the entity
-        this->entity_registry_.assign<antara::gaming::ecs::component::position>(dummy_entity,
-                                                                                static_cast<float>(window_info.width) /
-                                                                                2.f,
-                                                                                static_cast<float>(window_info.height) /
-                                                                                2.f);
+        this->entity_registry_.assign<transform::position_2d>(dummy_entity,
+                                                              static_cast<float>(window_info.x()) /
+                                                              2.f,
+                                                              static_cast<float>(window_info.y()) /
+                                                              2.f);
 
         //! attach a tag component to the entity
         entity_registry_.assign<entt::tag<"game_scene"_hs >>(dummy_entity);
 
         //! attach a layer to the entity
-        this->entity_registry_.assign<antara::gaming::ecs::component::layer<0>>(dummy_entity);
+        this->entity_registry_.assign<graphics::layer<0>>(dummy_entity);
     }
 
     void game_scene::update() noexcept
